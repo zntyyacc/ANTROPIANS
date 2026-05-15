@@ -1,0 +1,364 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Space+Mono:wght@400;700&display=swap');
+
+  .mg-root {
+    font-family: 'Space Mono', monospace;
+    padding: 1rem 0;
+    max-width: 680px;
+  }
+  .mg-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .mg-title {
+    font-family: 'Bangers', cursive;
+    font-size: 42px;
+    letter-spacing: 3px;
+    color: var(--color-text-primary);
+    margin: 0;
+    line-height: 1;
+  }
+  .mg-sub {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .mg-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 12px;
+  }
+  .mg-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  textarea {
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    box-sizing: border-box;
+  }
+  .mg-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  select {
+    width: 100%;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+  }
+  .mg-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .mg-preset {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: 20px;
+    cursor: pointer;
+    background: var(--color-background-secondary);
+    color: var(--color-text-secondary);
+    transition: all 0.15s;
+  }
+  .mg-preset:hover {
+    border-color: var(--color-border-primary);
+    color: var(--color-text-primary);
+    background: var(--color-background-primary);
+  }
+  .mg-btn {
+    width: 100%;
+    padding: 14px;
+    font-family: 'Bangers', cursive;
+    font-size: 22px;
+    letter-spacing: 2px;
+    background: var(--color-text-primary);
+    color: var(--color-background-primary);
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    margin-top: 12px;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .mg-btn:hover { opacity: 0.85; }
+  .mg-btn:active { transform: scale(0.98); }
+  .mg-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .mg-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .mg-imgwrap {
+    position: relative;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    border: 0.5px solid var(--color-border-tertiary);
+    background: var(--color-background-secondary);
+    aspect-ratio: 1;
+  }
+  .mg-imgwrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .mg-imgwrap .mg-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.65);
+    padding: 8px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    display: flex;
+    gap: 6px;
+  }
+  .mg-imgwrap:hover .mg-overlay { opacity: 1; }
+  .mg-act {
+    flex: 1;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 5px 8px;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border: 0.5px solid rgba(255,255,255,0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+  }
+  .mg-act:hover { background: rgba(255,255,255,0.3); }
+  .mg-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+  .mg-spinner {
+    font-family: 'Bangers', cursive;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--color-text-secondary);
+    animation: pulse 1s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+  .mg-imgwrap .mg-prompt-tip {
+    position: absolute;
+    top: 6px; left: 6px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    font-size: 9px;
+    font-family: 'Space Mono', monospace;
+    padding: 3px 6px;
+    border-radius: 3px;
+    max-width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mg-count {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    text-align: right;
+    margin-top: 6px;
+  }
+  .mg-empty {
+    text-align: center;
+    padding: 2rem;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    border: 1px dashed var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    margin-top: 12px;
+  }
+</style>
+
+<div class="mg-root">
+  <h2 class="sr-only">Meme image generator menggunakan Pollinations AI</h2>
+  <div class="mg-header">
+    <div class="mg-title">🎭 MEME FACTORY</div>
+    <div class="mg-sub">Powered by Pollinations.ai · Free · Unlimited · No API Key</div>
+  </div>
+
+  <div class="mg-card">
+    <div class="mg-label">Describe your meme / gambar</div>
+    <textarea id="prompt" placeholder="e.g. a confused cat wearing sunglasses sitting in traffic, meme style, funny..."></textarea>
+    <div class="mg-presets">
+      <div class="mg-preset" onclick="setPreset(this)">🐱 cat being dramatic</div>
+      <div class="mg-preset" onclick="setPreset(this)">🐸 Pepe the frog vibing</div>
+      <div class="mg-preset" onclick="setPreset(this)">💀 skeleton waiting forever</div>
+      <div class="mg-preset" onclick="setPreset(this)">🦆 duck cult ritual</div>
+      <div class="mg-preset" onclick="setPreset(this)">🧠 galaxy brain moment</div>
+      <div class="mg-preset" onclick="setPreset(this)">🔥 this is fine dog</div>
+      <div class="mg-preset" onclick="setPreset(this)">👀 surprised pikachu face</div>
+      <div class="mg-preset" onclick="setPreset(this)">🤡 clown applying makeup</div>
+    </div>
+    <div class="mg-row">
+      <div>
+        <div class="mg-label">Style</div>
+        <select id="style">
+          <option value="meme, internet humor, funny">Meme Classic</option>
+          <option value="surreal, absurd, chaos, meme art">Surreal Chaos</option>
+          <option value="pixel art, 8bit, retro meme">Pixel Art</option>
+          <option value="anime style, kawaii, cute meme">Anime Meme</option>
+          <option value="dark humor, edgy, dramatic lighting">Dark & Edgy</option>
+          <option value="oil painting, renaissance art meme">Renaissance Meme</option>
+          <option value="vaporwave, synthwave aesthetic, purple pink">Vaporwave</option>
+          <option value="low quality, intentionally bad, shitpost">Shitpost Energy</option>
+        </select>
+      </div>
+      <div>
+        <div class="mg-label">Jumlah gambar</div>
+        <select id="count">
+          <option value="1">1 gambar</option>
+          <option value="2" selected>2 gambar</option>
+          <option value="4">4 gambar</option>
+          <option value="6">6 gambar</option>
+        </select>
+      </div>
+    </div>
+    <button class="mg-btn" id="genBtn" onclick="generate()">⚡ GENERATE MEME ⚡</button>
+  </div>
+
+  <div id="gallery"></div>
+  <div class="mg-count" id="totalCount"></div>
+</div>
+
+<script>
+  let totalGenerated = 0;
+  const gallery = document.getElementById('gallery');
+
+  function setPreset(el) {
+    document.getElementById('prompt').value = el.textContent.replace(/^[\p{Emoji}\s]+/u, '').trim();
+  }
+
+  function buildUrl(prompt, style, seed) {
+    const full = `${prompt}, ${style}, high quality`;
+    const encoded = encodeURIComponent(full);
+    return `https://image.pollinations.ai/prompt/${encoded}?width=512&height=512&seed=${seed}&nologo=true`;
+  }
+
+  async function generate() {
+    const prompt = document.getElementById('prompt').value.trim();
+    if (!prompt) {
+      document.getElementById('prompt').focus();
+      return;
+    }
+    const style = document.getElementById('style').value;
+    const count = parseInt(document.getElementById('count').value);
+    const btn = document.getElementById('genBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ GENERATING...';
+
+    const row = document.createElement('div');
+    row.className = 'mg-gallery';
+
+    const placeholders = [];
+    for (let i = 0; i < count; i++) {
+      const ph = document.createElement('div');
+      ph.className = 'mg-loading';
+      ph.innerHTML = `<span class="mg-spinner">BREWING MEME ${i+1}/${count}...</span>`;
+      row.appendChild(ph);
+      placeholders.push(ph);
+    }
+    gallery.insertBefore(row, gallery.firstChild);
+
+    const promises = [];
+    for (let i = 0; i < count; i++) {
+      const seed = Math.floor(Math.random() * 9999999);
+      promises.push(loadImage(prompt, style, seed, placeholders[i]));
+    }
+
+    await Promise.allSettled(promises);
+    totalGenerated += count;
+    document.getElementById('totalCount').textContent = `Total generated this session: ${totalGenerated}`;
+    btn.disabled = false;
+    btn.textContent = '⚡ GENERATE MEME ⚡';
+  }
+
+  function loadImage(prompt, style, seed, placeholder) {
+    return new Promise((resolve) => {
+      const url = buildUrl(prompt, style, seed);
+      const wrap = document.createElement('div');
+      wrap.className = 'mg-imgwrap';
+
+      const tip = document.createElement('div');
+      tip.className = 'mg-prompt-tip';
+      tip.textContent = prompt;
+
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = prompt;
+
+      const overlay = document.createElement('div');
+      overlay.className = 'mg-overlay';
+
+      const dlBtn = document.createElement('a');
+      dlBtn.className = 'mg-act';
+      dlBtn.textContent = '⬇ download';
+      dlBtn.href = url;
+      dlBtn.download = `meme-${seed}.jpg`;
+      dlBtn.target = '_blank';
+
+      const copyBtn = document.createElement('div');
+      copyBtn.className = 'mg-act';
+      copyBtn.textContent = '📋 copy url';
+      copyBtn.onclick = () => {
+        navigator.clipboard.writeText(url).catch(() => {});
+        copyBtn.textContent = '✓ copied!';
+        setTimeout(() => copyBtn.textContent = '📋 copy url', 1500);
+      };
+
+      const regenBtn = document.createElement('div');
+      regenBtn.className = 'mg-act';
+      regenBtn.textContent = '🔄 regen';
+      regenBtn.onclick = () => {
+        const newSeed = Math.floor(Math.random() * 9999999);
+        const newUrl = buildUrl(prompt, style, newSeed);
+        img.src = '';
+        wrap.replaceWith(placeholder);
+        placeholder.innerHTML = `<span class="mg-spinner">RELOADING...</span>`;
+        loadImage(prompt, style, newSeed, placeholder);
+      };
+
+      overlay.appendChild(dlBtn);
+      overlay.appendChild(copyBtn);
+      overlay.appendChild(regenBtn);
+
+      img.onload = () => {
+        wrap.appendChild(tip);
+        wrap.appendChild(img);
+        wrap.appendChild(overlay);
+        placeholder.replaceWith(wrap);
+        resolve();
+      };
+      img.onerror = () => {
+        placeholder.innerHTML = `<span class="mg-spinner" style="color:red">FAILED 😵<br><small style="font-size:9px">coba lagi</small></span>`;
+        const retry = document.createElement('div');
+        retry.style.cssText = 'position:absolute;bottom:8px;left:0;right:0;text-align:center';
+        retry.innerHTML = `<button style="font-family:monospace;font-size:10px;padding:4px 12px;cursor:pointer" onclick="this.closest('.mg-loading').innerHTML='<span class=mg-spinner>RETRYING...</span>';loadImage('${prompt.replace(/'/g,"\\'")}','${style}',${Math.floor(Math.random()*9999999)},this.closest('.mg-loading'))">retry</button>`;
+        placeholder.style.position = 'relative';
+        placeholder.appendChild(retry);
+        resolve();
+      };
+    });
+  }
+</script>
